@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Playlist</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body class="container" style="margin-top: 50px;">
+
+    <% if (messages.success) { %>
+    <div class="alert alert-success" role="alert"><%- messages.success %></div>
+    <% } %>
+
+    <% if (messages.error) { %>
+    <div class="alert alert-danger" role="alert"><%- messages.error %></div>
+    <% } %>
+
+    <div class="card"> 
+        <div class="card-header">
+            <ul class="nav nav-pills w-100">
+                <li class="nav-pill active">
+                    <a class="nav-link">Playlist</a>
+                </li>
+                <li class="nav-pill ml-auto">
+                    <a class="nav-link active" href="/playlist">Playlist CRUD Visit</a>
+                </li>
+            </ul>
+        </div>
+    <div class="card-body">
+        
+        <% if(data.length) { %>
+        <table class="table" id="tbody">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Singer</th>
+                    <th width="200px">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <% for(var i = 0; i< data.length; i++) { %>
+                <tr>
+                    <td><%= data[i].name%></td>
+                    <td><%= data[i].singer%></td>
+                    
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+        <% } %>
+        
+        <!-- if result is empty -->
+        <% if(!data.length) { %>
+            <p class="text-center">No book found!</p>
+        <% } %>
+
+        </div>
+    </div>
+    <script src="socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      socket.on('payload',function(list)
+      {
+  console.log(list);
+  var tbody = document.getElementById('tbody'),
+  row = tbody.insertRow();
+          // cell = row.insertCell();
+          // cell.innerHTML=list.name;
+          cell = row.insertCell();
+          cell.innerHTML=list.name;
+          cell = row.insertCell();
+          cell.innerHTML=list.singer;
+      })
+    </script>
+</body>
+</html>
+
